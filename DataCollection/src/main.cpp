@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <Arduino.h>
 #include "HX711.h"
+#include <math.h>
 
 #include "mqtt/MQTTConnector.h"
 #include "Credentials.h"
@@ -14,7 +15,7 @@ double Peso;
 double sensarPeso(){
   double Peso;    
 
-  delay(2000);
+  delay(3000);
   Serial.print("Peso: ");
   Peso = balanza.get_units(20);
   Peso = Peso*(-1);
@@ -67,7 +68,7 @@ void setup()
   Serial.println("Destarando...");
   Serial.println("...");
   // Establecer la escala.
-  balanza.set_scale(409); 
+  balanza.set_scale(406.3); 
   balanza.tare(20);       //El peso actual es considerado Tara.  
   Serial.println("Listo para pesar");  
 }
@@ -76,7 +77,7 @@ void loop()
 {  
   MQTTLoop(); 
   //Pubica el peso sensado en tópico MQTT.  
-  Peso = sensarPeso();
-  String output = "Peso: " + String( Peso ) + " gramos.";  
-  MQTTPublish(TOPICPESOORO, (char *)output.c_str());  
+  Peso = lround(sensarPeso()); //Aproximar al más cercano.
+  String output = "{ \"item\" : \"diamantes\", \"weight\": " + String( Peso ) + "}";  
+  MQTTPublish(TOPIC, (char *)output.c_str());  
 }
