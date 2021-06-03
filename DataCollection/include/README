@@ -1,3 +1,11 @@
-Código necesario para sensar peso a través de una celda de carga de 5kg con el uso de un módulo ADC HX711. Se publica el peso sensado en un tópico MQTT.
+Gramera:
+Código necesario para sensar peso a través de una celda de carga de 5kg con el uso de un módulo ADC HX711.
+Se publica el peso sensado en un tópico MQTT, con el siguiente formato JSON:
+{
+    "item": "diamantes/oro",
+    "weight": peso,
+    "date": yyyy-mm-dd,
+    "hour": hh mm
+}
 A través del siguiente enlace se muestran los pasos necesarios para la calibración de la celda y su uso. 
 Enlace: https://naylampmechatronics.com/blog/25_tutorial-trasmisor-de-celda-de-carga-hx711-balanza-digital.html
